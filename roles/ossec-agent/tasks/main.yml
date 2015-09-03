@@ -1,0 +1,18 @@
+---
+- name: ensure OSSEC agent package is installed
+  apt:
+    name: ossec-hids-agent
+    state: present
+
+- name: copy ossec config
+  template:
+    dest: /var/ossec/etc/
+    src: ossec.conf
+
+- stat:
+    path: /var/ossec/etc/client.keys
+  register: ossec_client_keys
+
+- name: run agent auth (if agent is not already added)
+  shell: /var/ossec/bin/agent-auth -m {{ manager_ip }} -p 1515 -A {{ agent_hostname }}
+  when: not ossec_client_keys.stat.exists
