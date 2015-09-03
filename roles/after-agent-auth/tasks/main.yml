@@ -1,0 +1,8 @@
+---
+- name: kill authd if it is running
+  shell: "pkill ossec-authd || true"
+
+- name: restart OSSEC
+  service:
+    name: ossec
+    state: restarted

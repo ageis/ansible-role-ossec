@@ -14,3 +14,8 @@
   sudo: yes
   vars_files: 
     - vars.yml
+
+- hosts: ossec-manager
+  roles:
+    - after-agent-auth
+  sudo: yes
