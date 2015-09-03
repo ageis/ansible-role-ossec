@@ -1,4 +1,4 @@
 ---
-manager_ip: 127.0.0.1
-agent_ip: 127.0.0.1
-agent_hostname: localhost
+manager_ip: 45.55.44.234
+agent_ip: 45.55.32.120
+agent_hostname: test-ossec-agent

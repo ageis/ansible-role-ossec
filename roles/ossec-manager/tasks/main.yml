@@ -21,7 +21,7 @@
   when: list_agents != "{{ agent_hostname }}-{{ agent_ip }} is available."
 
 - name: start authd
-  shell: "/var/ossec/bin/ossec-authd -i {{ app_ip }} -p 1515 >/dev/null 2>&1 &"
+  shell: "/var/ossec/bin/ossec-authd -i {{ agent_ip }} -p 1515 >/dev/null 2>&1 &"
   async: 0
   poll: 0
   when: list_agents.stdout != "{{ agent_hostname }}-{{ agent_ip }} is available."
