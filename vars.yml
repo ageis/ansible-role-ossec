@@ -1,0 +1,4 @@
+---
+manager_ip: 127.0.0.1
+agent_ip: 127.0.0.1
+agent_hostname: localhost
