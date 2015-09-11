@@ -14,7 +14,7 @@
   register: ossec_client_keys
 
 - name: run agent auth (if agent is not already added)
-  shell: /var/ossec/bin/agent-auth -m {{ manager_ip }} -p 1515 -A {{ agent_hostname }}
+  shell: /var/ossec/bin/agent-auth -m {{ ossec_manager_ip }} -p 1515 -A {{ ossec_agent_hostname }}
   when: not ossec_client_keys.stat.exists
 
 - name: restart OSSEC
