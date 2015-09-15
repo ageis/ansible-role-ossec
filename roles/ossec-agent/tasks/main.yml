@@ -13,11 +13,36 @@
     path: /var/ossec/etc/client.keys
   register: ossec_client_keys
 
+- name: check for preexisting agent registration
+  command: /var/ossec/bin/manage_agents -l
+  register: list_agents
+  changed_when: false
+
+- name: make sure authd is not already running on ossec server
+  delegate_to: test-ossec-server
+  command: pkill ossec-authd
+  ignore_errors: true
+  changed_when: false
+
+- name: start authd on ossec server
+  delegate_to: test-ossec-server
+  shell: /var/ossec/bin/ossec-authd -i {{ ossec_agent_ip }} -p 1515 &
+  async: 0
+  poll: 0
+  #when: "'{{ ossec_agent_hostname }}-{{ ossec_agent_ip }} is available.' not in list_agents.stdout"
+  #  when: "'No agent available' in list_agents.stdout"
+
 - name: run agent auth (if agent is not already added)
-  shell: /var/ossec/bin/agent-auth -m {{ ossec_manager_ip }} -p 1515 -A {{ ossec_agent_hostname }}
+  command: /var/ossec/bin/agent-auth -m {{ ossec_manager_ip }} -p 1515 -A {{ ossec_agent_hostname }}
   when: not ossec_client_keys.stat.exists
 
-- name: restart OSSEC
+- name: restart OSSEC (client)
+  service:
+    name: ossec
+    state: restarted
+
+- name: restart OSSEC (server)
+  delegate_to: test-ossec-server
   service:
     name: ossec
     state: restarted
