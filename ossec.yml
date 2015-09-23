@@ -1,21 +1,12 @@
 ---
-- hosts: ossec-manager
+- hosts: ossec_manager
   roles:
     - install-ossec-repo
     - ossec-manager
   sudo: yes
-  vars_files: 
-    - vars.yml
 
-- hosts: ossec-agent
+- hosts: ossec_agents
   roles:
     - install-ossec-repo
     - ossec-agent
-  sudo: yes
-  vars_files: 
-    - vars.yml
-
-- hosts: ossec-manager
-  roles:
-    - after-agent-auth
   sudo: yes

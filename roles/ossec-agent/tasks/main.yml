@@ -1,10 +1,10 @@
 ---
-- name: ensure OSSEC agent package is installed
+- name: Ensure OSSEC agent package is installed
   apt:
     name: ossec-hids-agent
     state: present
 
-- name: copy ossec config
+- name: Copy OSSEC configuration
   template:
     dest: /var/ossec/etc/
     src: ossec.conf
@@ -13,36 +13,44 @@
     path: /var/ossec/etc/client.keys
   register: ossec_client_keys
 
-- name: check for preexisting agent registration
+- name: Check for pre-existing agent registration
   command: /var/ossec/bin/manage_agents -l
   register: list_agents
   changed_when: false
 
-- name: make sure authd is not already running on ossec server
-  delegate_to: test-ossec-server
+- name: Make sure authd is not already running on OSSEC server
+  delegate_to: ossec_manager
   command: pkill ossec-authd
   ignore_errors: true
   changed_when: false
+  run_once: true
 
-- name: start authd on ossec server
-  delegate_to: test-ossec-server
-  shell: /var/ossec/bin/ossec-authd -i {{ ossec_agent_ip }} -p 1515 &
+- name: Start authd on OSSEC server
+  delegate_to: ossec_manager
+  shell: /var/ossec/bin/ossec-authd -i {{ ansible_ssh_host }} -p 1515 &
   async: 0
   poll: 0
-  #when: "'{{ ossec_agent_hostname }}-{{ ossec_agent_ip }} is available.' not in list_agents.stdout"
-  #  when: "'No agent available' in list_agents.stdout"
+  run_once: true
 
-- name: run agent auth (if agent is not already added)
-  command: /var/ossec/bin/agent-auth -m {{ ossec_manager_ip }} -p 1515 -A {{ ossec_agent_hostname }}
+- name: Run agent auth (if agent is not already added)
+  command: /var/ossec/bin/agent-auth -m {{ hostvars.ossec_manager.ansible_ssh_host }} -p 1515 -A {{ inventory_hostname }}
   when: not ossec_client_keys.stat.exists
 
-- name: restart OSSEC (client)
+- name: Restart OSSEC (client)
   service:
     name: ossec
     state: restarted
 
-- name: restart OSSEC (server)
-  delegate_to: test-ossec-server
+- name: Kill authd on OSSEC server
+  delegate_to: ossec_manager
+  command: pkill ossec-authd
+  ignore:errors: true
+  change_when: false
+  run_once: true
+
+- name: Restart OSSEC (server)
+  delegate_to: ossec_manager
   service:
     name: ossec
     state: restarted
+  run_once: true

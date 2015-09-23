@@ -1,15 +1,14 @@
 # OSSEC agent and server
 
-Ansible roles for setting up an OSSEC agent and server
+Ansible roles for setting up an OSSEC server and multiple agents.
 
 ## Usage
-Populate hostgroups for the OSSEC server and its clients.
+Populate your hosts/inventory file with the OSSEC server and a hostgroup for its clients like so:
 
 ```
-[ossec-manager]
-monitoring.example.com
+ossec_manager monitoring.example.com
 
-[ossec-agents]
+[ossec_agents]
 web.example.com
 db.example.com
 mail.example.com

@@ -1,4 +1,0 @@
----
-ossec_manager_ip: 45.55.44.234
-ossec_agent_ip: 45.55.32.120
-ossec_agent_hostname: test-ossec-agent
