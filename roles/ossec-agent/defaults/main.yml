@@ -1,0 +1,7 @@
+---
+# Assume interface for OSSEC agent registation is eth0,
+# which is is typically the interface for managing the
+# public IPv4 address (equates to ansible_default_ipv4's
+# iface in most setups). Override to force an internal-only
+# iface, e.g. "eth1".
+ossec_networking_interface: eth0
