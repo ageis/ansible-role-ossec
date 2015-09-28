@@ -44,8 +44,8 @@
 - name: Kill authd on OSSEC server
   delegate_to: ossec_manager
   command: pkill ossec-authd
-  ignore:errors: true
-  change_when: false
+  ignore_errors: true
+  changed_when: false
   run_once: true
 
 - name: Restart OSSEC (server)
