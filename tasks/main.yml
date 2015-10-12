@@ -1,0 +1,8 @@
+---
+- include: packages_common.yml
+
+- include: manager_config.yml
+  when: "'ossec_manager' in group_names"
+
+- include: agent_config.yml
+  when: "'ossec_manager' not in group_names"
