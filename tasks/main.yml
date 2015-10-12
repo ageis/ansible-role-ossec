@@ -6,3 +6,14 @@
 
 - include: agent_config.yml
   when: "'ossec_manager' not in group_names"
+
+- include: manager_registration.yml
+  when: "'ossec_manager' in group_names"
+
+- include: agent_registration.yml
+  when: "'ossec_manager' not in group_names"
+
+- include: manager_cleanup.yml
+  when: "'ossec_manager' in group_names"
+
+

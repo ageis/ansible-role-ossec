@@ -1,0 +1,15 @@
+---
+- name: Run agent auth (if agent is not already added).
+  command: >
+    /var/ossec/bin/agent-auth
+    -m {{ hostvars[groups.ossec_manager[0]]['ansible_' + ossec_networking_interface]['ipv4']['address'] }}
+    -p 1515
+    -A {{ inventory_hostname }}
+  when: not ossec_client_keys.stat.exists
+
+- name: Restart OSSEC (client).
+  service:
+    name: ossec
+    state: restarted
+
+

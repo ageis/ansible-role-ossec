@@ -1,0 +1,12 @@
+---
+- name: Kill authd on OSSEC server.
+  command: pkill ossec-authd
+  ignore_errors: true
+  changed_when: false
+  run_once: true
+
+- name: Restart OSSEC (server).
+  service:
+    name: ossec
+    state: restarted
+  run_once: true

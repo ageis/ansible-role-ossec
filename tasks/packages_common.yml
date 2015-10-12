@@ -3,7 +3,7 @@
   apt_key:
     url: http://ossec.wazuh.com/repos/apt/conf/ossec-key.gpg.key
 
-- name: install apt repo for OSSEC.
+- name: Install apt repo for OSSEC.
   copy:
     src: ossec.list
     dest: /etc/apt/sources.list.d/
