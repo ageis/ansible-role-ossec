@@ -5,3 +5,7 @@
 # iface in most setups). Override to force an internal-only
 # iface, e.g. "eth1".
 ossec_networking_interface: eth0
+
+# Creating readable vars so the tasks lists aren't painfully verbose.
+ossec_manager_ip_address: "{{ hostvars[groups.ossec_manager[0]]['ansible_' + ossec_networking_interface].ipv4.address }}"
+ossec_client_ip_address: "{{ hostvars[inventory_hostname]['ansible_' + ossec_networking_interface].ipv4.address }}"

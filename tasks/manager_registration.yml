@@ -15,7 +15,7 @@
 - name: Start authd on OSSEC server.
   shell: >
     /var/ossec/bin/ossec-authd
-    -i {{ hostvars[inventory_hostname]['ansible_' + ossec_networking_interface]['ipv4']['address'] }}
+    -i {{ ossec_manager_ip_address }}
     -p 1515 &
   async: 0
   poll: 0
