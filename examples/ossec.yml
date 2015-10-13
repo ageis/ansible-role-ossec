@@ -1,0 +1,16 @@
+---
+# Set the groups in the inventory file:
+#
+# [ossec_manager]
+# monitoring.example.com
+#
+# [ossec_agents]
+# web.example.com
+# db.example.com
+# mail.example.com
+#
+# Run the role against both groups.
+- hosts: ossec_manager:ossec_agents
+  sudo: yes
+  roles:
+    - ossec
