@@ -18,5 +18,16 @@ mail.example.com
 Then run the role against both groups, `ossec_manager:ossec_agents`. 
 See `examples/ossec.yml` for an example playbook. 
 
+### Vars
+Declare `ossec_directories_to_watch` as a list to provide a custom set
+of directories to watch. Regardless of whether `ossec_directories_to_watch`
+is set, a few critical dirs will be monitored for changes:
+
+  * `/bin`
+  * `/etc/`
+  * `/sbin/`
+  * `/usr/bin`
+  * `/usr/sbin`
+
 ## License
 MIT
