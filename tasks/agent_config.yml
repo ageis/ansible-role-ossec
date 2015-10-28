@@ -1,0 +1,11 @@
+---
+- name: Ensure OSSEC agent package is installed
+  apt:
+    name: ossec-hids-agent
+    state: present
+
+- name: Copy OSSEC configuration
+  template:
+    dest: /var/ossec/etc/
+    src: ossec.conf
+

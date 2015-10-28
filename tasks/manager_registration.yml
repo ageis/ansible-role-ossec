@@ -1,0 +1,21 @@
+---
+- name: Check whether authd is already running on OSSEC server.
+  command: pgrep ossec-authd
+  register: authd_running_result
+  # pgrep will return 1 if no PID is found, 0 if found.
+  # Prevent task from reporting errors, since the we're handing
+  # the rc in the subsequent task.
+  changed_when: false
+  failed_when: false
+
+- name: Stop authd if already running on OSSEC server.
+  command: pkill ossec-authd
+  when: authd_running_result.rc == 0
+
+- name: Start authd on OSSEC server.
+  shell: >
+    /var/ossec/bin/ossec-authd
+    -i {{ ossec_manager_ip_address }}
+    -p 1515 &
+  async: 0
+  poll: 0

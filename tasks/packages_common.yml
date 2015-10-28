@@ -1,15 +1,15 @@
 ---
-- name: add GPG key for OSSEC
+- name: Add GPG key for OSSEC apt repo.
   apt_key:
     url: http://ossec.wazuh.com/repos/apt/conf/ossec-key.gpg.key
 
-- name: install apt repo for OSSEC
+- name: Install apt repo for OSSEC.
   copy:
     src: ossec.list
     dest: /etc/apt/sources.list.d/
-  register: add_repos
+  register: ossec_add_repo
 
-- name: update apt repo
+- name: Update apt repo if changed.
   apt:
     update_cache: true
-  when: add_repos.changed
+  when: ossec_add_repo.changed

@@ -1,0 +1,11 @@
+---
+- name: Run agent auth (if agent is not already added).
+  command: >
+    /var/ossec/bin/agent-auth
+    -m {{ ossec_manager_ip_address }}
+    -p 1515
+    -A {{ inventory_hostname }}
+  when: inventory_hostname not in hostvars[groups.ossec_manager[0]].ossec_registered_agents.stdout
+  notify:
+    - Restart OSSEC (client).
+

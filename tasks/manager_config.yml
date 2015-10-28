@@ -1,19 +1,24 @@
 ---
-- name: ensure OSSEC manager package is installed
+- name: Ensure OSSEC manager package is installed.
   apt:
     name: ossec-hids
     state: present
 
-- name: check to see if agent already exists
+- name: Check list of already registered agents.
   command: /var/ossec/bin/list_agents -a
-  register: list_agents
+  # Read-only command, so reporting "changed" is meaningless.
+  # Subsequent tasks will inspect the registered result
+  # to determine which hosts should be registered.
+  changed_when: false
+  register: ossec_registered_agents
 
-- name: create authd SSL keys
+- name: Create authd SSL key if none exists.
   command: openssl genrsa -out /var/ossec/etc/sslmanager.key 4096
   args:
     creates: /var/ossec/etc/sslmanager.key
 
-- name: create ssl cert
+- name: Create authd SSL cert if none exists.
   command: openssl req -new -x509 -batch -subj "/CA=AU/ST=Some-State/locality=city/O=Internet Widgits Pty Ltd/commonName=mon/organizationUnitName=section/emailAddress=admin@localhost" -key /var/ossec/etc/sslmanager.key -out /var/ossec/etc/sslmanager.cert -days 1825
   args:
     creates: /var/ossec/etc/sslmanager.cert
+
