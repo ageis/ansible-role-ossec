@@ -9,3 +9,10 @@ ossec_networking_interface: eth0
 # Creating readable vars so the tasks lists aren't painfully verbose.
 ossec_manager_ip_address: "{{ hostvars[groups.ossec_manager[0]]['ansible_' + ossec_networking_interface].ipv4.address }}"
 ossec_client_ip_address: "{{ hostvars[inventory_hostname]['ansible_' + ossec_networking_interface].ipv4.address }}"
+
+# Monitor directories for changes. These are in addition to template
+# defaults, namely:
+#    <directories check_all="yes">/etc,/usr/bin,/usr/sbin</directories>
+#    <directories check_all="yes">/bin,/sbin</directories>
+#
+ossec_directories_to_watch: []
