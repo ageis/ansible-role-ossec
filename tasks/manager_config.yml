@@ -18,7 +18,7 @@
     creates: /var/ossec/etc/sslmanager.key
 
 - name: Create authd SSL cert if none exists.
-  command: openssl req -new -x509 -batch -subj "/CA=AU/ST=Some-State/locality=city/O=Internet Widgits Pty Ltd/commonName=mon/organizationUnitName=section/emailAddress=admin@localhost" -key /var/ossec/etc/sslmanager.key -out /var/ossec/etc/sslmanager.cert -days 1825
+  command: openssl req -new -x509 -batch -subj "/CA=AU/ST=Some-State/locality=city/O=Internet Widgits Pty Ltd/commonName={{ inventory_hostname }}/organizationUnitName=section/emailAddress=root@localhost" -key /var/ossec/etc/sslmanager.key -out /var/ossec/etc/sslmanager.cert -days 1825
   args:
     creates: /var/ossec/etc/sslmanager.cert
 
